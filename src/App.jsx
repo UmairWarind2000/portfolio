@@ -3,6 +3,15 @@ import { useEffect, useRef, useState } from "react";
 // Replace src/assets/avatar.jpg with your real photo — same filename, this
 // import doesn't need to change.
 import avatarUrl from "./assets/avatar.jpg";
+// Put your resume PDF at src/assets/resume.pdf — same filename, no other
+// changes needed. The ?url suffix tells Vite to treat it as a plain file
+// URL (needed since PDFs aren't in Vite's default image/asset list).
+// Paste your Google Drive "Anyone with the link can view" share URL here.
+import storiqImg from "./assets/projects/storiq.png";
+import doclyImg from "./assets/projects/docly.png";
+import careerForgeImg from "./assets/projects/career-forge.png";
+import dropshipImg from "./assets/projects/dropship-marketplace.png";
+
 
 const NAV = [
   { id: "about", label: "About" },
@@ -12,18 +21,19 @@ const NAV = [
   { id: "contact", label: "Contact" },
 ];
 
-// TODO: replace with your real GitHub / LinkedIn URLs.
+// TODO: replace github with your real GitHub URL.
 const SOCIALS = {
   github: "https://github.com/UmairWarind2000",
   linkedin: "https://www.linkedin.com/in/muhammad-umair-rasheed-5085751a6",
 };
 
+const RESUME_URL = "https://drive.google.com/file/d/1K9TadNV7dG5bdpwsPgxz1yiDOcnmMwGk/view?usp=sharing";
 // TODO: add real dates + 2-3 bullet points per role once confirmed.
 const EXPERIENCE = [
   {
     role: "MERN Stack Developer",
     company: "Mercury Sols",
-    period: "DEC 2025 - FEB 2026",
+    period: "DEC 2025 - JAN 2026",
     summary:
       "Worked on full-stack web applications using the MERN stack, contributing to responsive frontend interfaces, REST APIs, database integration, and application features.",
     bullets: [
@@ -36,7 +46,7 @@ const EXPERIENCE = [
   {
     role: "Web Developer",
     company: "Coding Solution 24",
-    period: "JAN 2024 - NOV 2025",
+    period: "JUN 2024 - NOV 2025",
     summary:
       "Built and maintained full-stack web applications, working across frontend development, backend APIs, databases, and third-party service integrations.",
     bullets: [
@@ -74,6 +84,7 @@ const SKILLS = [
 const PROJECTS = [
   {
     name: "Storiq",
+    image: storiqImg,
     tagline: "Multi-tenant Shopify SaaS with metered billing",
     description:
       "A SaaS platform that plugs into a merchant's Shopify store, queues background sync jobs, and bills usage through Stripe — built across eight phases from schema to production.",
@@ -89,6 +100,7 @@ const PROJECTS = [
   },
   {
     name: "Docly",
+    image: doclyImg,
     tagline: "RAG-based document intelligence platform",
     description:
       "Upload a document, ask it questions. Vector search over MongoDB Atlas backs a retrieval pipeline, with live progress pushed over sockets as documents are chunked and embedded.",
@@ -104,6 +116,7 @@ const PROJECTS = [
   },
   {
     name: "Career-Forge",
+    image: careerForgeImg,
     tagline: "AI career-readiness platform — Final Year Project",
     description:
       "Models a job seeker's growth as a sequential decision problem: Q-learning recommends next skills, Sentence-BERT scores resume-to-role fit, spaCy parses postings pulled live from JSearch.",
@@ -114,6 +127,22 @@ const PROJECTS = [
       "Reinforcement-learning recommendation loop instead of a static rules engine",
       "Two databases in one system: Postgres for structured records, Mongo for parsed postings",
       "Live job data via the JSearch API rather than a static seed set",
+    ],
+  },
+  {
+    name: "Dropship Marketplace",
+    image: dropshipImg,
+    tagline: "Two-role dropshipping platform — Seller Portal & Admin Panel",
+    description:
+      "First freelance client project: a two-sided dropshipping platform (no public storefront) where sellers browse an admin catalog, request products to be sourced on their behalf, and fund orders via crypto wallet — with admin manually placing orders against outside customers and crediting sellers minus commission. Frontend styled to match TikTok Shop's layout under the client's own branding.",
+    tags: ["MERN", "Cloudinary", "Role-based Auth", "Crypto Wallet Flow", "Feature-modular Backend"],
+    deployed: "In development — client project",
+    url: "https://dropshipmarketplace.net",
+    notes: [
+      "Two roles only (seller, admin) — no third customer role, unlike typical multi-vendor stores",
+      "Seller 'sourcing requests' let a seller ask admin to outsource a specific product, added only to that seller's own catalog",
+      "Commission is calculated on profit (sale price minus cost), not on the full sale amount",
+      "Built phase by phase: backend in feature modules (auth, sellers, admin, products, orders, payments, notifications), frontend split into seller/admin feature folders",
     ],
   },
 ];
@@ -271,35 +300,28 @@ function ProjectCard({ project, index }) {
 
   return (
     <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--text)]/30">
-
-      {/* Project Initial */}
-      <div className="mb-5 flex h-28 w-full items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-2)]">
-        <span className="text-3xl font-bold tracking-tight text-[var(--muted)]">
-          {project.name.slice(0, 2).toUpperCase()}
-        </span>
+      <div className="mb-5 h-28 w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface-2)]">
+        <img
+          src={project.image}
+          alt={`${project.name} preview`}
+          className="h-full w-full object-cover"
+        />
       </div>
 
-      {/* Project Number */}
       <span className="mb-2 text-xs font-mono text-[var(--muted)]">
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      {/* Project Name */}
-      <h3 className="text-xl font-bold">
-        {project.name}
-      </h3>
+      <h3 className="text-xl font-bold">{project.name}</h3>
 
-      {/* Tagline */}
       <p className="mt-1 text-sm font-medium text-[var(--text)]">
         {project.tagline}
       </p>
 
-      {/* Description */}
       <p className="mt-3 text-[14px] leading-relaxed text-[var(--muted)]">
         {project.description}
       </p>
 
-      {/* Technologies */}
       <div className="mt-4 flex flex-wrap gap-2">
         {project.tags.map((t) => (
           <span
@@ -311,52 +333,44 @@ function ProjectCard({ project, index }) {
         ))}
       </div>
 
-      {/* Deployment */}
       <p className="mt-4 text-[12px] text-[var(--muted)]">
         {project.deployed}
       </p>
 
-      {/* Bottom Actions */}
-      <div className="mt-auto pt-4">
-
-        {/* View Project Button */}
-        {project.url && (
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-[13px] font-semibold transition-all duration-200 hover:border-[var(--text)]/40 hover:bg-[var(--surface-2)]"
-          >
-            View Project
-            <span aria-hidden="true">↗</span>
-          </a>
-        )}
-
-        {/* Build Notes Button */}
-        <button
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          className="mt-4 block text-[13px] font-semibold underline decoration-[var(--border)] underline-offset-4 hover:decoration-[var(--text)]"
+      {/* View Project Button */}
+      {project.url && (
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex w-fit items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-[13px] font-semibold transition-all hover:border-[var(--text)]/40 hover:bg-[var(--surface-2)]"
         >
-          {open ? "− Hide build notes" : "+ Build notes"}
-        </button>
+          View Project
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
 
-        {/* Build Notes */}
-        {open && (
-          <ul className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-3">
-            {project.notes.map((n, i) => (
-              <li
-                key={i}
-                className="flex gap-2 text-[13px] leading-relaxed text-[var(--muted)]"
-              >
-                <span>›</span>
-                {n}
-              </li>
-            ))}
-          </ul>
-        )}
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="mt-4 self-start text-[13px] font-semibold underline decoration-[var(--border)] underline-offset-4 hover:decoration-[var(--text)]"
+      >
+        {open ? "− Hide build notes" : "+ Build notes"}
+      </button>
 
-      </div>
+      {open && (
+        <ul className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-3">
+          {project.notes.map((n, i) => (
+            <li
+              key={i}
+              className="flex gap-2 text-[13px] leading-relaxed text-[var(--muted)]"
+            >
+              <span>›</span>
+              {n}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -396,6 +410,14 @@ export default function App() {
             >
               {theme === "dark" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
             </button>
+            <a
+              href={RESUME_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:border-[var(--text)]/40 sm:inline-block"
+            >
+              Resume
+            </a>
             <a
               href="#contact"
               className="hidden rounded-full bg-[var(--text)] px-4 py-2 text-sm font-semibold text-[var(--invert-text)] sm:inline-block"
@@ -513,7 +535,7 @@ export default function App() {
           <div className="space-y-4">
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <p className="text-xs font-semibold tracking-widest text-[var(--muted)]">LOCATION</p>
-              <p className="mt-2 text-[15px] font-medium">Rahim Yar Khan, Pakistan - (open to relocate)</p>
+              <p className="mt-2 text-[15px] font-medium">Rahim Yar Khan, Pakistan</p>
             </div>
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <p className="text-xs font-semibold tracking-widest text-[var(--muted)]">EMAIL</p>

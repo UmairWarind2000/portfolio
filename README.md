@@ -27,7 +27,7 @@ portfolio/
 
 ## Still needs your input
 
-1. **Your photo** — `App.jsx` already imports `src/assets/avatar.jpg` and
+2. **Your photo** — `App.jsx` already imports `src/assets/avatar.jpg` and
    renders it in the hero circle. Just replace that file with your real
    photo, same filename (`avatar.jpg`) — no code changes needed. A gray
    placeholder image ships in this zip so the project builds out of the box;
@@ -47,3 +47,9 @@ portfolio/
 
 Static Vite build — deploys straight to Vercel or Netlify with the Vite
 framework preset, no server needed.
+
+3. **Your resume** — `App.jsx` imports `src/assets/resume.pdf` via
+   `import resumeUrl from "./assets/resume.pdf?url"` and links it from the
+   "Resume" button in the top nav (opens in a new tab). Replace that file
+   with your real resume, same filename — no code changes needed. A
+   placeholder PDF ships in this zip so the project builds out of the box.
